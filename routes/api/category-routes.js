@@ -9,8 +9,8 @@ router.get('/', (req, res) => {
   // be sure to include its associated Products
   Category.findAll({
     include: {
-      model: Product
-      
+      model: Product,
+      attributes:['product_name','price','stock']
     }
   }).then(response => {
     if(!response) {
@@ -32,7 +32,8 @@ router.get('/:id', (req, res) => {
       id: req.params.id
     },
     include: {
-      model: Product
+      model: Product,
+      attributes:['product_name','price','stock']
     }
   }).then(response => res.json(response))
   .catch(err => {
