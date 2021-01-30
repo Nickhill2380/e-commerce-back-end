@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const sequelize = require('../../config/connection');
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
@@ -8,20 +9,18 @@ router.get('/', (req, res) => {
   // find all products
   // be sure to include its associated Category and Tag data
   Product.findAll({
-    attributes:['id', 'product_name', 'price', 'stock'],
+    attributes:['id', 'product_name', 'price', 'stock', 'category_id'],
     include: [{
       model: Category,
-      attributes:['category_name'] 
-    }]
-    /*{
-      model: Tag
-    }
-  ]*/
+      attributes:['id', 'category_name'] 
+    },
+    {
+      model:Tag,
+      attributes:['tag_name']
+    } 
+  ] 
   }).then(response => {
-    if(!response) {
-     return res.status(404).json({ message: 'No tag found with that id.'});
-    }
-   res.json(response);
+  return res.json(response);
   })
   .catch(err => {
     console.log(err);
@@ -64,7 +63,6 @@ router.post('/', (req, res) => {
       stock: req.body.stock,
       tagIds: req.body.tagIds
     }
-  
   Product.create(query)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -94,9 +92,10 @@ router.put('/:id', (req, res) => {
     where: {
       id: req.params.id,
     },
-  })
+    
+  }
+  )
     .then((product) => {
-      // find all associated tags from ProductTag
       return ProductTag.findAll({ where: { product_id: req.params.id } });
     })
     .then((productTags) => {
@@ -131,7 +130,7 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
-  Product.destory({
+  Product.destroy({
     where: {id: req.params.id}
   }).then(response => {
     if(!response) {
