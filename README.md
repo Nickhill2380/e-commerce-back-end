@@ -22,7 +22,7 @@ You need to install  sequelize, express, mysql2, and dotenv.
 
 Log into mysql run source db/schema.sql then quit out of sql run npm run seed in the command line. You can then use npm start to open up the server. Using a software like insomnia core will allow you to view the various functions. Please see below video for more information.
 
-[Demo] (https://drive.google.com/file/d/1plqTVdMJpv969ZiNk0R-Mp8IPlxZbnNe/preview "E-commerce-back-end")
+[Demo](https://drive.google.com/file/d/1plqTVdMJpv969ZiNk0R-Mp8IPlxZbnNe/preview "E-commerce-back-end")
 
 ## Questions
 
