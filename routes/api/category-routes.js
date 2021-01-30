@@ -35,7 +35,12 @@ router.get('/:id', (req, res) => {
       model: Product,
       attributes:['product_name','price','stock']
     }
-  }).then(response => res.json(response))
+  }).then(response => {
+    if(!response) {
+     return res.status(404).json({ message: 'No product found with that id.'});
+    }
+   res.json(response);
+  })
   .catch(err => {
     console.log(err);
     return res.status(500).json(err);
@@ -79,7 +84,7 @@ router.delete('/:id', (req, res) => {
     if(!response) {
      return res.status(404).json({ message: 'No catergory found with that id.'});
     }
-   res.json(response);
+    res.json(response);
   })
   .catch(err => {
     console.log(err);
